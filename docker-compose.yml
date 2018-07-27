@@ -1,0 +1,33 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: npm run dev
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    links:
+      - mysql:db
+    depends_on:
+          - mysql
+    env_file:
+      - variables.env
+  
+  mysql:
+      restart: always
+      image: mysql:5.7
+      expose:
+        - "3306"
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./data/mysql:/docker-entrypoint-initdb.d
+        - mysql:/var/lib/mysql
+        - ./config/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      env_file:
+          - variables.env
+volumes:
+  mysql:
+    driver: local
