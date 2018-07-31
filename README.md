@@ -9,3 +9,6 @@
 
 ## END
 - docker-compose down
+
+## Swagger
+- /api-docs
