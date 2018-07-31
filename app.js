@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var swaggerUi = require('swagger-ui-express');
+var swaggerSpec = require('./modules/swaggerSpec.js');
 var mysqlConnection = require('./modules/mysql-connection.js'); //for mysql connection with my-connection
 
 var indexRouter = require('./routes/index');
@@ -20,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mysqlConnection);	//mysql connection for my-connection
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
